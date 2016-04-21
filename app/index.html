@@ -14,46 +14,58 @@
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 
     <link href="./bower_components/angular-material/angular-material.css" rel="stylesheet"/>
+    <link href="./bootstrap.css" rel="stylesheet"/>
+    <!--<link href="./bower_components/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet"/>-->
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--<link href="./bower_components/material-design-icons/www/css/material.css" rel="stylesheet"/>-->
 
     <script src="./bower_components/angular/angular.js" type="text/javascript"></script>
     <script src="./bower_components/angular-animate/angular-animate.js" type="text/javascript"></script>
     <script src="./bower_components/angular-aria/angular-aria.js" type="text/javascript"></script>
     <script src="./bower_components/angular-material/angular-material.js" type="text/javascript"></script>
     <script src="./bower_components/angular-route/angular-route.js"></script>
+    <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
     <script src="./app.js"></script>
 </head>
 <body layout="column" ng-controller="mainCtrl as mc">
 <md-toolbar layout="row">
     <!--<h1>Road Live Reporting</h1>-->
+
     <md-button class="md-button" aria-label="menu" ng-click="mc.toggleSearch()">
         <!--<md-icon md-svg-src="img/icons/menu.svg"></md-icon>-->
-        <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
-        <!--<i class="material-icons">menu</i>-->
+        <!--<md-icon md-svg-src="img/icons/menu.svg"></md-icon>-->
+        <i class="material-icons md-48">menu</i>
     </md-button>
+    <h1>Hellmann - Road Live Reporting</h1>
 </md-toolbar>
 
 <!-- Container #2 -->
 <div flex layout="row">
     <!-- Container #3 -->
-    <md-sidenav md-is-open="true" class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
+    <md-sidenav md-is-open="false" class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
                 style="width: 500px;max-width: 500px;">
-        <md-toolbar layout="row"></md-toolbar>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="menu" ng-click="mc.toggleSearch()">
+                    <i class="material-icons">search</i>
+                </md-button>
+                <h1>Search</h1>
+            </div>
+        </md-toolbar>
         <md-content>
-            <form name="search-form">
+            <form name="search-form" class="md-padding" md-whiteframe="2">
                 <!--<div layout="column">-->
                 <!--<md-input-container>-->
-                <div class="md-padding" ng-cloak>
-                    From
-                    <md-datepicker ng-model="mc.from" md-placeholder="Enter date"></md-datepicker>
-                    <br/>
-                    To
-                    <md-datepicker ng-model="mc.to" md-placeholder="Enter date"></md-datepicker>
-                    <br/>
-
-                    <md-input-container >
-                        <label>Parties</label>
-                        <md-select ng-model="selectedParties" md-on-open="loadParties()" multiple>
+                <div class="md-padding" layout="column">
+                    <div layout="row">
+                        <md-datepicker ng-model="mc.from" md-placeholder="From date"></md-datepicker>
+                        <md-datepicker ng-model="mc.to" md-placeholder="To date"></md-datepicker>
+                    </div>
+                    <md-input-container>
+                        <!--<label>Parties</label>-->
+                        <md-select ng-model="selectedParties" placeholder="Parties" multiple>
                             <md-optgroup label="BUPA 1">
                                 <md-option ng-value="party.partyName"
                                            ng-repeat="party in parties | filter: {bupa: 'Duni' }">{{party.partyName}}
@@ -66,14 +78,96 @@
                             </md-optgroup>
                         </md-select>
                     </md-input-container>
-                </div>
                     <!--</div>-->
+
+                    <!-- SHIPMENT -->
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <md-button class="md-icon-button" aria-label="expand_less" ng-click="isCollapsed = !isCollapsed">
+                                <i class="material-icons">{{isCollapsed ? 'expand_less' : 'expand_more'}}</i>
+                            </md-button>
+                            <span>Shipment</span>
+                            <span flex></span>
+
+                            <md-button class="md-icon-button" aria-label="expand_less" ng-click="">
+                                <i class="material-icons">help_outline</i>
+                            </md-button>
+
+                        </div>
+                    </md-toolbar>
+                    <div uib-collapse="isCollapsed" md-whiteframe="2">
+                        <span>Here can be found the contents...</span><br/>
+                        <span>Here can be found the contents...</span><br/>
+                        <span>Here can be found the contents...</span><br/>
+                    </div>
+                    <md-divider></md-divider>
+
+                    <!-- DELIVERY TIME -->
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <md-button class="md-icon-button" aria-label="expand_less">
+                                <i class="material-icons">expand_less</i>
+                            </md-button>
+                            <span>Delivery Time</span>
+                            <span flex></span>
+
+                            <md-button class="md-icon-button" aria-label="help outline" ng-click="">
+                                <i class="material-icons">help_outline</i>
+                            </md-button>
+
+                        </div>
+                    </md-toolbar>
+                    <md-divider></md-divider>
+
+                    <!--STATUS -->
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <md-button class="md-icon-button" aria-label="expand_less">
+                                <i class="material-icons">expand_less</i>
+                            </md-button>
+                            <span>Status</span>
+                            <span flex></span>
+
+                            <md-button class="md-icon-button" aria-label="help outline" ng-click="">
+                                <i class="material-icons">help_outline</i>
+                            </md-button>
+                        </div>
+                    </md-toolbar>
+                    <md-divider></md-divider>
+
+                    <!-- LOCATION -->
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <md-button class="md-icon-button" aria-label="expand_less">
+                                <i class="material-icons">expand_less</i>
+                            </md-button>
+                            <span>Location</span>
+                            <span flex></span>
+
+                            <md-button class="md-icon-button" aria-label="help outline" ng-click="">
+                                <i class="material-icons">help_outline</i>
+                            </md-button>
+                        </div>
+                    </md-toolbar>
+
+                    <md-button class="md-raised md-primary">Show Report</md-button>
+                </div>
             </form>
         </md-content>
     </md-sidenav>
     <!-- Container #4 -->
-    <md-content flex id="content">
-
+    <md-content flex id="content" class="md-padding">
+        <div>
+            <md-input-container>
+                <label>Selected Report</label>
+                <md-select ng-model="selectedReports">
+                    <md-option ng-repeat="report in reports" value="{{report.id}}" ng-disabled="$index === 1">
+                        {{report.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <md-divider></md-divider>
     </md-content>
 </div>
 

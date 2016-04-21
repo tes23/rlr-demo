@@ -2,11 +2,26 @@
 
 // Declare app level module which depends on views, and components
 angular.module('myApp', [
-    'ngRoute', 'ngMaterial'
+    'ngRoute', 'ngMaterial', 'ngAnimate', 'ui.bootstrap'
 ]).controller('mainCtrl', function($scope, $mdSidenav, $timeout){
     var self = this;
-    $scope.selectedParties = null;
-    $scope.parties = null;
+    $scope.isCollapsed = false;
+    $scope.selectedParties = [];
+    //$scope.parties = null;
+    $scope.parties =   [
+        { bupa: 'Duni', partyName: 'Duni 1' },
+        { bupa: 'Duni', partyName: 'Duni 2' },
+        { bupa: 'Duni', partyName: 'Duni 3' },
+        { bupa: 'Mogule', partyName: 'Mogule 1' },
+        { bupa: 'Mogule', partyName: 'Mogule 2' },
+        { bupa: 'Mogule', partyName: 'Mogule 3' },
+        { bupa: 'Mogule', partyName: 'Mogule 4' }
+    ];
+    $scope.reports =   [
+        { id: 1, name: 'Runtime Report' },
+        { id: 2, name: 'Shipment Destinations' }
+    ];
+
 
     self.toggleSearch = toggleSearchMenu;
 
