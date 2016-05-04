@@ -6,31 +6,38 @@ module rlr.controllers {
 
     export class SearchController {
 
-        //static $inject = [
-        //    "$mdSidenav"
-        //];
+        static $inject = [
+            '$scope', '$mdSidenav', 'rlrService'
+        ];
 
         private _expanded:boolean = false;
 
-        constructor(private $mdSidenav: angular.material.ISidenavService){}
+        constructor(private $scope:ng.IScope, private $mdSidenav:angular.material.ISidenavService, private rlrService:services.RLRService) {
+            this.init();
+        }
 
-        public toggleSearch():void {
+        toggleSearch():void {
             this.$mdSidenav('left').toggle();
         }
 
-        collapseExpand() {
+        collapseExpand():void {
             console.log("SearchController:collapseExpand called");
             this._expanded = !this._expanded;
         }
 
-        //get isExpanded():boolean {
-        //    return this._expanded;
-        //}
-
-        search() {
+        search():void {
             console.log("SearchController:search called");
+            this.rlrService.search();
         }
-    }
 
-    //app.controller("SearchController", rlr.controllers.SearchController);
+        private init():void {
+            console.log("init called");
+            var _this:SearchController = this;
+
+            this.$scope.$on('openSearch', function () {
+                _this.toggleSearch();
+            });
+        }
+
+    }
 }
