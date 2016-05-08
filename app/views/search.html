@@ -13,25 +13,25 @@
             <!--<div layout="column">-->
             <!--<md-input-container>-->
             <div class="md-padding" layout="column">
-                <!--<div layout="row">
-                    <md-datepicker ng-model="mc.from" md-placeholder="From date"></md-datepicker>
-                    <md-datepicker ng-model="mc.to" md-placeholder="To date"></md-datepicker>
+                <div layout="row">
+                    <md-datepicker ng-model="sc.from" md-placeholder="From date"></md-datepicker>
+                    <md-datepicker ng-model="sc.to" md-placeholder="To date"></md-datepicker>
                 </div>
                 <md-input-container>
                     <label>Parties</label>
                     <md-select ng-model="selectedParties" placeholder="Parties" multiple>
                         <md-optgroup label="BUPA 1">
                             <md-option ng-value="party.partyName"
-                                       ng-repeat="party in parties | filter: {bupa: 'Duni' }">{{party.partyName}}
+                                       ng-repeat="party in sc.parties | filter: {bupa: 'Duni' }">{{party.partyName}}
                             </md-option>
                         </md-optgroup>
                         <md-optgroup label="BUPA 2">
                             <md-option ng-value="party.partyName"
-                                       ng-repeat="party in parties | filter: {bupa: 'Mogule' }">{{party.partyName}}
+                                       ng-repeat="party in sc.parties | filter: {bupa: 'Mogule' }">{{party.partyName}}
                             </md-option>
                         </md-optgroup>
                     </md-select>
-                </md-input-container>-->
+                </md-input-container>
 
                 <!-- SHIPMENT -->
                 <md-toolbar>
@@ -104,6 +104,12 @@
                 </md-toolbar>
 
                 <md-button class="md-raised md-primary" ng-click="sc.search()">Show Report</md-button>
+
+                <div ng-if="sc.model != null">
+                    <p><b>Category:</b> {{sc.model.category}}</p>
+                    <p><b>Count:</b> {{sc.model.count}}</p>
+                    <p><b>date:</b> {{sc.model.date}}</p>
+                </div>
             </div>
         </form>
     </md-content>

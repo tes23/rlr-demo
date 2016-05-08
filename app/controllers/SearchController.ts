@@ -4,15 +4,32 @@
 module rlr.controllers {
     //var app = angular.module("myApp");
 
+    import Find = rlr.models.Find;
     export class SearchController {
 
         static $inject = [
-            '$scope', '$mdSidenav', 'rlrService'
+            '$scope', '$mdSidenav', 'rlrService', '$timeout'
         ];
 
         private _expanded:boolean = false;
+        private model:Find;
+        private loadingProgress:boolean = false;
 
-        constructor(private $scope:ng.IScope, private $mdSidenav:angular.material.ISidenavService, private rlrService:services.RLRService) {
+        private parties =   [
+            { bupa: 'Duni', partyName: 'Duni 1' },
+            { bupa: 'Duni', partyName: 'Duni 2' },
+            { bupa: 'Duni', partyName: 'Duni 3' },
+            { bupa: 'Mogule', partyName: 'Mogule 1' },
+            { bupa: 'Mogule', partyName: 'Mogule 2' },
+            { bupa: 'Mogule', partyName: 'Mogule 3' },
+            { bupa: 'Mogule', partyName: 'Mogule 4' }
+        ];
+        /*$scope.reports =   [
+        { id: 1, name: 'Runtime Report' },
+        { id: 2, name: 'Shipment Destinations' }
+    ];*/
+
+        constructor(private $scope:ng.IScope, private $mdSidenav:angular.material.ISidenavService, private rlrService:services.RLRService, private $timeout:angular.ITimeoutService) {
             this.init();
         }
 
@@ -27,7 +44,18 @@ module rlr.controllers {
 
         search():void {
             console.log("SearchController:search called");
-            this.rlrService.search();
+            this.toggleSearch();
+            this.loadingProgress = true;
+            this.model = null;
+
+            this.$timeout(()=> {
+                this.loadingProgress = false;
+            }, 2500);
+            /*this.rlrService.search().then(response =>{
+                this.loadingProgress = false;
+                this.model = response;
+                console.log("response arrived:" + response.category);
+            });*/
         }
 
         private init():void {
@@ -37,6 +65,11 @@ module rlr.controllers {
             this.$scope.$on('openSearch', function () {
                 _this.toggleSearch();
             });
+
+            //this.$scope.$on('response', function (event, data) {
+            //    _this.model = data;
+            //    console.log('SearchController:model' + _this.model.category);
+            //});
         }
 
     }

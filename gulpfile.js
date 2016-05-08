@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 
 gulp.task('local-server', localServer);
 function localServer() {
-    server('http://www.thomas-bayer.com/sqlrest/CUSTOMER/', 7000);
+    server('http://172.24.227.137:8080/rlr/', 7000);
 };
 
 
@@ -20,7 +20,7 @@ function server(target, port) {
         livereload: true,
         open: true,
         proxies: [{
-            source: '/CUSTOMER/',
+            source: '/rlr/',
             target: target
         }]
     }));

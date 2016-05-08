@@ -34,11 +34,77 @@
     <script type="text/javascript">
 
         // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages':['corechart', 'geochart']});
+        google.charts.load('current', {'packages': ['corechart', 'geochart', 'line', 'table']});
 
         // Set a callback to run when the Google Visualization API is loaded.
-//        google.charts.setOnLoadCallback(drawChart);
-//        google.charts.setOnLoadCallback(drawMarkersMap);
+        google.charts.setOnLoadCallback(drawRuntimeReportAreaChart);
+        google.charts.setOnLoadCallback(drawRuntimeReportLineChart);
+        google.charts.setOnLoadCallback(drawRuntimeReportTable);
+        //        google.charts.setOnLoadCallback(drawMarkersMap);
+
+        function drawRuntimeReportAreaChart() {
+            var chartData = google.visualization.arrayToDataTable([
+                ['Shipments', '24h', '48h', '72h'],
+                ['68', 40, 40, 10],
+                ['452', 20, 40, 0],
+                ['1704', 25, 55, 35],
+                ['2804', 65, 15, 10]
+            ]);
+
+            var options = {
+                title: 'Runtime Report',
+                isStacked: 'relative',
+                height: 450,
+//                width: 500,
+                legend: {position: 'bottom', maxLines: 3},
+                hAxis: {title: 'Delivery', titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('runtime_area'));
+            chart.draw(chartData, options);
+        }
+
+        function drawRuntimeReportLineChart() {
+            var chartData = google.visualization.arrayToDataTable([
+                ['Count', '24h', '48h', '72h'],
+                ['68', 40, 40, 10],
+                ['452', 20, 40, 0],
+                ['1704', 25, 55, 35],
+                ['2804', 65, 15, 10]
+            ]);
+
+            var options = {
+                title: 'Runtime Report',
+                isStacked: 'relative',
+                height: 450,
+//                width: 500,
+                legend: {position: 'bottom', maxLines: 3},
+                hAxis: {title: 'Delivery', titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
+
+            var chart = new google.charts.Line(document.getElementById('runtime_line'));
+            chart.draw(chartData, options);
+        }
+
+        function drawRuntimeReportTable() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Name');
+            data.addColumn('number', 'Shipment Count');
+            data.addColumn('number', 'Percentage');
+            data.addRows([
+                ['Delivery 24h', {v: 2331, f: '2331'}, {v: 0.85, f: '85%'}],
+                ['Delivery 48h', {v: 124, f: '124'}, {v: 0.04, f: '4%'}],
+                ['Delivery 72h', {v: 234, f: '234'}, {v: 0.08, f: '8%'}],
+                ['Delivery over 72h', {v: 0, f: '0'}, {v: 0.0, f: '0%'}]
+
+            ]);
+
+            var table = new google.visualization.Table(document.getElementById('runtime_table'));
+
+            table.draw(data, {showRowNumber: true, width: '50%'/*, width: '100%', height: '100%'*/});
+        }
 
         // Callback that creates and populates a data table,
         // instantiates the pie chart, passes in the data and
@@ -57,9 +123,11 @@
             ]);
 
             // Set chart options
-            var options = {'title':'How Much Pizza I Ate Last Night',
-                'width':400,
-                'height':300};
+            var options = {
+                'title': 'How Much Pizza I Ate Last Night',
+                'width': 400,
+                'height': 300
+            };
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -104,8 +172,8 @@
                 datalessRegionColor: '#fefdfd',
                 defaultColor: '#f1f1f1',
                 colorAxis: {colors: ['green', 'blue']},
-                'width':800,
-                'height':600
+                'width': 800,
+                'height': 600
             };
 
             var chart = new google.visualization.GeoChart(document.getElementById('map_div'));
@@ -132,44 +200,92 @@
 
 <header-directive></header-directive>
 <!-- Container #2 -->
-<div flex layout="row">
+<div layout="row">
     <!-- Container #3 -->
     <search-directive></search-directive>
     <!-- Container #4 -->
-    <!--<md-content flex id="content" class="md-padding" layout="row">
-        <div ng-cloak>
-            <md-input-container>
-                <label>Selected Report</label>
-                <md-select ng-model="selectedReports">
-                    <md-option ng-repeat="report in reports" value="{{report.id}}" ng-disabled="$index === 1">
-                        {{report.name}}
+    <md-content id="content" class="md-padding" layout="column" layout-fill>
+        <!--<div ng-cloak>-->
+        <!--<md-input-container>
+            <label>Selected Report</label>
+            <md-select ng-model="selectedReports">
+                <md-option ng-repeat="report in reports" value="{{report.id}}" ng-disabled="$index === 1">
+                    {{report.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container>
+            &lt;!&ndash;<label>Parties</label>&ndash;&gt;
+            <md-select ng-model="selectedParties" placeholder="Parties" multiple>
+                <md-optgroup label="BUPA 1">
+                    <md-option ng-value="party.partyName"
+                               ng-repeat="party in parties | filter: {bupa: 'Duni' }">{{party.partyName}}
                     </md-option>
-                </md-select>
-            </md-input-container>
+                </md-optgroup>
+                <md-optgroup label="BUPA 2">
+                    <md-option ng-value="party.partyName"
+                               ng-repeat="party in parties | filter: {bupa: 'Mogule' }">{{party.partyName}}
+                    </md-option>
+                </md-optgroup>
+            </md-select>
+        </md-input-container>
+    </div>
+    <md-divider></md-divider>-->
+        <md-content layout="column" layout-fill layout-align="center center" ng-show="sc.loadingProgress">
+            <md-progress-circular md-mode="indeterminate" md-diameter="100"></md-progress-circular>
+            <p>Loading</p>
+        </md-content>
 
-            <md-input-container>
-                &lt;!&ndash;<label>Parties</label>&ndash;&gt;
-                <md-select ng-model="selectedParties" placeholder="Parties" multiple>
-                    <md-optgroup label="BUPA 1">
-                        <md-option ng-value="party.partyName"
-                                   ng-repeat="party in parties | filter: {bupa: 'Duni' }">{{party.partyName}}
-                        </md-option>
-                    </md-optgroup>
-                    <md-optgroup label="BUPA 2">
-                        <md-option ng-value="party.partyName"
-                                   ng-repeat="party in parties | filter: {bupa: 'Mogule' }">{{party.partyName}}
-                        </md-option>
-                    </md-optgroup>
-                </md-select>
-            </md-input-container>
-        </div>
-        <md-divider></md-divider>
+        <md-tabs md-dynamic-height md-border-bottom ng-show="!sc.loadingProgress">
+            <md-tab label="National">
+                <md-content class="md-padding">
+                    <div layout="row" layout-align="space-around center" layout-padding style="width: 100%;">
+                        <div layout="column" flex="50" md-whiteframe="2" style="height: 550px;">
+                            <md-toolbar>
+                                <div class="md-toolbar-tools">
+                                    <h4><span>Delivery Area chart</span></h4>
+                                    <span flex></span>
+                                    <md-button class="md-icon-button" aria-label="more">
+                                        <i class="material-icons md-48">more_vert</i>
+                                    </md-button>
+                                </div>
+                            </md-toolbar>
+                            <md-content flex>
+                                <div id="runtime_area"></div>
+                            </md-content>
+                        </div>
 
-        &lt;!&ndash;Div that will hold the pie chart&ndash;&gt;
-        <div id="chart_div"></div>
-        <div id="map_div"></div>
+                        <div flex="4"></div>
 
-    </md-content>-->
+                        <div layout="column" flex="50" md-whiteframe="2" style="height: 550px;">
+                            <md-toolbar>
+                                <div class="md-toolbar-tools">
+                                    <h4><span>Delivery Line chart</span></h4>
+                                    <span flex></span>
+                                    <md-button class="md-icon-button" aria-label="more">
+                                        <i class="material-icons md-48">more_vert</i>
+                                    </md-button>
+                                </div>
+                            </md-toolbar>
+                            <md-content flex>
+                                <div id="runtime_line"></div>
+                            </md-content>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="center center" layout-padding style="width: 100%;">
+                        <div id="runtime_table" flex="100" layout="row" layout-align="center center"
+                             md-whiteframe="2"></div>
+                    </div>
+
+                    <div id="map_div"></div>
+                </md-content>
+            </md-tab>
+            <md-tab label="International">
+                <h1>International content can be found here</h1>
+            </md-tab>
+        </md-tabs>
+    </md-content>
 </div>
 
 <!-- In production use:

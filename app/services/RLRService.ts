@@ -2,26 +2,31 @@
  * Created by acsikor on 5/4/16.
  */
 module rlr.services {
-
-    export interface IModel { id: number; }
+    import Find = rlr.models.Find;
 
     export class RLRService {
-        static $inject = ["$http"];
+        static $inject = ['$http', '$q'];
 
-        private url = "/CUSTOMER/";
-        private model:IModel[];
+        private url = "/rlr/?category=valami";
+        //private model:Find;
 
-        constructor(private $http:ng.IHttpService) {}
+        constructor(private $http:ng.IHttpService, private $q:ng.IQService) {}
 
         //public search = () => this.$http.get<IModel[]>(this.url);
-        public search() {
-            var model = this.model;
-            this.$http.get<IModel[]>(this.url).then(function(response){
+        public search():ng.IPromise<Find> {
+            var deferred = this.$q.defer();
+            //var model = this.model;
+            //var _this = this;
+            this.$http.get<Find>(this.url).then(function(response){
                 console.log("Response code: " + response.status);
-                model = response.data;
-                console.log("Number of docs found: " + response.data);
 
+                var model:Find = response.data;
+                console.log("Number of docs found: " + model.category);
+                deferred.resolve(model);
+                //_this.$scope.$broadcast("response", model);
             });
+
+            return deferred.promise;
         }
     }
 
